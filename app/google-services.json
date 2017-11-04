@@ -1,25 +1,27 @@
 {
   "project_info": {
-    "project_number": "792853303152",
-    "project_id": "tecnocompuapp"
+    "project_number": "558678406017",
+    "firebase_url": "https://tecnocompuapp-77860.firebaseio.com",
+    "project_id": "tecnocompuapp-77860",
+    "storage_bucket": "tecnocompuapp-77860.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792853303152:android:17db522707e6ef97",
+        "mobilesdk_app_id": "1:558678406017:android:17db522707e6ef97",
         "android_client_info": {
           "package_name": "sv.com.tecnocompu.tecnocompuapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "792853303152-98ibc3tuu1nek7kk94i2kgpi5d6ocvoe.apps.googleusercontent.com",
+          "client_id": "558678406017-9t04g2sd8323d5iieog3jopvib95cl72.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDJelrYfjTG2kUx9BlAzr-rAx0I9hwNeNc"
+          "current_key": "AIzaSyCdSsKUBPfjda00LmamycKK1xEpIu1yv48"
         }
       ],
       "services": {
@@ -31,7 +33,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

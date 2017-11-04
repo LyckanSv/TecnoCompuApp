@@ -1,8 +1,17 @@
 package sv.com.tecnocompu.tecnocompuapp.notification;
 
-/**
- * Created by cesar on 11-03-17.
- */
 
-public class TecnocompuFirebaseMessagingService {
+import android.util.Log;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
+public class TecnocompuFirebaseMessagingService extends FirebaseMessagingService {
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+
+            Log.d("NOTIFICACION", "r: "+remoteMessage.getData().get("message"));
+
+    }
 }

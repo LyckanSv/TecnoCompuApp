@@ -18,12 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import sv.com.tecnocompu.tecnocompuapp.fragments.AboutFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.ContactFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.DealsFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.HomeFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.ProductsFragment;
-import sv.com.tecnocompu.tecnocompuapp.notification.RegistrationService;
 
 
 public class MainActivity extends AppCompatActivity
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent i = new Intent(this, RegistrationService.class);
-        startService(i);
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
