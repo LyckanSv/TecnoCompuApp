@@ -18,6 +18,7 @@ import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_DEAL;
 import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_KEY;
 import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_PRODUCT;
 import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.FLAG;
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.PICTURE_URL;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -62,11 +63,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private void prepareDeal(Deal deal) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, DealDetailFragment.newInstance(deal)).commit();
-        Picasso.with(this).load(deal.getImageUrl()).error(R.drawable.nodisponible).into(tabHeader);
+        Picasso.with(this).load(PICTURE_URL + deal.getImageUrl()).error(R.drawable.nodisponible).into(tabHeader);
     }
 
     private void prepareProduct(Product product) {
-        Picasso.with(this).load(product.getPictureUrl()).error(R.drawable.nodisponible).into(tabHeader);
+        Picasso.with(this).load(PICTURE_URL + product.getPictureUrl()).error(R.drawable.nodisponible).into(tabHeader);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, ProductDetailFragment.newInstance(product)).commit();
     }
 }

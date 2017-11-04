@@ -23,6 +23,8 @@ import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
 import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.PICTURE_URL;
+
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.AdapterViewHolder> implements Filterable {
     private Context context;
     private List<Deal> items = new ArrayList<>();
@@ -91,7 +93,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.AdapterViewHol
     public void onBindViewHolder(AdapterViewHolder holder, int position) {
         final Deal deal = itemsFilter.get(position);
         holder.title.setText(deal.getTitle());
-        Picasso.with(context).load(deal.getImageUrl()).error(R.drawable.nodisponible).into(holder.itemThumbnail);
+        Picasso.with(context).load(PICTURE_URL + deal.getImageUrl()).error(R.drawable.nodisponible).into(holder.itemThumbnail);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

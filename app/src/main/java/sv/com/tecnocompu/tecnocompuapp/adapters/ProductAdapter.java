@@ -22,6 +22,8 @@ import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Product;
 import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.PICTURE_URL;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> implements Filterable {
 
     private List<Product> items = new ArrayList<>();
@@ -93,7 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         final Product product = itemsFilter.get(position);
         holder.name.setText(product.getName());
-        Picasso.with(context).load(product.getPictureUrl()).error(R.drawable.nodisponible).into(holder.thumbnail);
+        Picasso.with(context).load(PICTURE_URL + product.getPictureUrl()).error(R.drawable.nodisponible).into(holder.thumbnail);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
