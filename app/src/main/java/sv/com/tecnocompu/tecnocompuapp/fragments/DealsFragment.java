@@ -38,11 +38,14 @@ import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.adapters.DealAdapter;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deals;
+import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 import sv.com.tecnocompu.tecnocompuapp.webapi.TecnoCompuAPI;
 import sv.com.tecnocompu.tecnocompuapp.webapi.TecnoCompuAPIControler;
 
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_DEAL;
 
-public class DealsFragment extends Fragment implements SearchView.OnQueryTextListener {
+
+public class DealsFragment extends Fragment implements SearchView.OnQueryTextListener, RecyclerListener {
 
     private Unbinder unbinder;
 
@@ -103,7 +106,7 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            //mListener.onFragmentInteraction();
         }
     }
 
@@ -137,9 +140,15 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
         return true;
     }
 
+    @Override
+    public void onClickListener(Object object) {
+        if (object!=null && object instanceof Deal){
+            mListener.onFragmentInteraction(object,BUNDLE_DEAL);
+        }
+    }
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Object object, String flag);
     }
 
     public void startQuery() {
@@ -164,7 +173,7 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void workResponse(Deals body) {
-        dealAdapter = new DealAdapter(body.getDeals(), this.getActivity());
+        dealAdapter = new DealAdapter(body.getDeals(), this.getActivity(),this);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this.getActivity(), R.anim.grid_layout_animation_from_bottom);
         recyclerView.setLayoutAnimation(animation);
         recyclerView.setAdapter(dealAdapter);

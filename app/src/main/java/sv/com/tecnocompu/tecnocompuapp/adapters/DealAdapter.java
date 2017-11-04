@@ -21,16 +21,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
+import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.AdapterViewHolder> implements Filterable {
     private Context context;
     private List<Deal> items = new ArrayList<>();
     private List<Deal> itemsFilter = new ArrayList<>();
+    private RecyclerListener listener;
 
-    public DealAdapter(List<Deal> items, Context context) {
+    public DealAdapter(List<Deal> items, Context context, RecyclerListener listener) {
         this.items = items;
         this.context = context;
         this.itemsFilter = items;
+        this.listener = listener;
     }
 
     @Override
@@ -86,9 +89,15 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.AdapterViewHol
 
     @Override
     public void onBindViewHolder(AdapterViewHolder holder, int position) {
-        Deal deal = itemsFilter.get(position);
+        final Deal deal = itemsFilter.get(position);
         holder.title.setText(deal.getTitle());
         Picasso.with(context).load(deal.getImageUrl()).error(R.drawable.nodisponible).into(holder.itemThumbnail);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickListener(deal);
+            }
+        });
     }
 
     @Override

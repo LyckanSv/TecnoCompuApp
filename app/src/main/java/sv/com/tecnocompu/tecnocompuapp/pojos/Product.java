@@ -1,9 +1,12 @@
 package sv.com.tecnocompu.tecnocompuapp.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+public class Product implements Parcelable{
 
     @SerializedName("name")
     @Expose
@@ -29,6 +32,37 @@ public class Product {
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+
+    protected Product(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        pictureUrl = in.readString();
+        manufacturer = in.readString();
+        model = in.readString();
+        if (in.readByte() == 0) {
+            likes = null;
+        } else {
+            likes = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            searches = null;
+        } else {
+            searches = in.readInt();
+        }
+        categoryId = in.readString();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -94,4 +128,30 @@ public class Product {
         this.categoryId = categoryId;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(pictureUrl);
+        parcel.writeString(manufacturer);
+        parcel.writeString(model);
+        if (likes == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(likes);
+        }
+        if (searches == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(searches);
+        }
+        parcel.writeString(categoryId);
+    }
 }

@@ -20,17 +20,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Product;
+import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> implements Filterable {
 
     private List<Product> items = new ArrayList<>();
     private List<Product> itemsFilter = new ArrayList<>();
     private Context context;
+    private RecyclerListener listener;
 
-    public ProductAdapter(List<Product> productAdapters, Context context) {
+    public ProductAdapter(List<Product> productAdapters, Context context, RecyclerListener listener) {
         this.items = productAdapters;
         this.context = context;
         this.itemsFilter = productAdapters;
+        this.listener = listener;
     }
 
     @Override
@@ -88,9 +91,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
-        Product product = itemsFilter.get(position);
+        final Product product = itemsFilter.get(position);
         holder.name.setText(product.getName());
         Picasso.with(context).load(product.getPictureUrl()).error(R.drawable.nodisponible).into(holder.thumbnail);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickListener(product);
+            }
+        });
     }
 
     @Override

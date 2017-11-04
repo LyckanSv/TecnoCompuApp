@@ -6,19 +6,12 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -28,7 +21,13 @@ import sv.com.tecnocompu.tecnocompuapp.fragments.ContactFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.DealsFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.HomeFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.ProductsFragment;
-import sv.com.tecnocompu.tecnocompuapp.utils.QueryHelperListener;
+import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
+import sv.com.tecnocompu.tecnocompuapp.pojos.Product;
+
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_DEAL;
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_KEY;
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_PRODUCT;
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.FLAG;
 
 
 public class MainActivity extends AppCompatActivity
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity
     ProductsFragment productsFragment;
     ContactFragment contactFragment;
     AboutFragment aboutFragment;
-
 
 
     @Override
@@ -92,10 +90,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
-
-
 
 
     @Override
@@ -146,4 +140,20 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onFragmentInteraction(Object object, String flag) {
+        if (object != null && object instanceof Product && flag.equals(BUNDLE_PRODUCT)) {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(BUNDLE_KEY, (Product) object);
+            intent.putExtra(FLAG, BUNDLE_PRODUCT);
+            startActivity(intent);
+        }
+
+        if (object != null && object instanceof Deal && flag.equals(BUNDLE_DEAL)) {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(BUNDLE_KEY, (Deal) object);
+            intent.putExtra(FLAG, BUNDLE_DEAL);
+            startActivity(intent);
+        }
+    }
 }

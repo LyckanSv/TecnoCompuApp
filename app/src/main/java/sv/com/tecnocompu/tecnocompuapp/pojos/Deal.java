@@ -1,9 +1,12 @@
 package sv.com.tecnocompu.tecnocompuapp.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Deal {
+public class Deal implements Parcelable{
 
     @SerializedName("title")
     @Expose
@@ -17,6 +20,25 @@ public class Deal {
     @SerializedName("description")
     @Expose
     private String description;
+
+    protected Deal(Parcel in) {
+        title = in.readString();
+        subtitle = in.readString();
+        imageUrl = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Deal> CREATOR = new Creator<Deal>() {
+        @Override
+        public Deal createFromParcel(Parcel in) {
+            return new Deal(in);
+        }
+
+        @Override
+        public Deal[] newArray(int size) {
+            return new Deal[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -50,4 +72,16 @@ public class Deal {
         this.description = description;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(subtitle);
+        parcel.writeString(imageUrl);
+        parcel.writeString(description);
+    }
 }

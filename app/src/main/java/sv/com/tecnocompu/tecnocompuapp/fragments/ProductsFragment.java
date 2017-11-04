@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,20 +33,23 @@ import retrofit2.Response;
 import sv.com.tecnocompu.tecnocompuapp.R;
 import sv.com.tecnocompu.tecnocompuapp.adapters.ProductAdapter;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
+import sv.com.tecnocompu.tecnocompuapp.pojos.Product;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Products;
-import sv.com.tecnocompu.tecnocompuapp.utils.QueryHelperListener;
+import sv.com.tecnocompu.tecnocompuapp.utils.RecyclerListener;
 import sv.com.tecnocompu.tecnocompuapp.webapi.TecnoCompuAPI;
 import sv.com.tecnocompu.tecnocompuapp.webapi.TecnoCompuAPIControler;
 
+import static sv.com.tecnocompu.tecnocompuapp.utils.Constants.BUNDLE_PRODUCT;
 
-public class ProductsFragment extends Fragment implements SearchView.OnQueryTextListener {
+
+public class ProductsFragment extends Fragment implements SearchView.OnQueryTextListener, RecyclerListener {
 
     private Unbinder unbinder;
 
     private OnFragmentInteractionListener mListener;
 
     private TecnoCompuAPI tc;
-    private List<Deal> deals = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
     private ProductAdapter productAdapter;
 
     @BindView(R.id.products_recycler)
@@ -109,7 +108,7 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            //mListener.onFragmentInteraction(uri);
         }
     }
 
@@ -137,10 +136,17 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (productAdapter!=null){
+        if (productAdapter != null) {
             productAdapter.getFilter().filter(newText);
         }
         return true;
+    }
+
+    @Override
+    public void onClickListener(Object object) {
+        if (object != null && object instanceof Product) {
+            mListener.onFragmentInteraction(object, BUNDLE_PRODUCT);
+        }
     }
 
     /**
@@ -155,7 +161,7 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Object object, String flag);
     }
 
     public void sendQuery() {
@@ -186,10 +192,10 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
     }
 
     private void workResponse(Products body) {
-
+        products = body.getProducts();
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this.getActivity(), R.anim.grid_layout_animation_from_bottom);
         recyclerView.setLayoutAnimation(animation);
-        productAdapter = new ProductAdapter(body.getProducts(), this.getActivity());
+        productAdapter = new ProductAdapter(products, this.getActivity(), this);
         recyclerView.setAdapter(productAdapter);
         generateMessage(body.getProducts().size());
         refreshLayout.setRefreshing(false);
