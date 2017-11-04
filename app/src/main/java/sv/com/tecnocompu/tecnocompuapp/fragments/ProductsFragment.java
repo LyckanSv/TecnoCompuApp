@@ -61,6 +61,8 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
     @BindView(R.id.refresh_container)
     SwipeRefreshLayout refreshLayout;
 
+    Call<Products> call;
+
     public ProductsFragment() {
         // Required empty public constructor
     }
@@ -105,13 +107,6 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
         searchView.setOnQueryTextListener(this);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            //mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -127,6 +122,8 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (call != null)
+            call.cancel();
     }
 
     @Override
@@ -165,7 +162,8 @@ public class ProductsFragment extends Fragment implements SearchView.OnQueryText
     }
 
     public void sendQuery() {
-        tc.getProducts().enqueue(new Callback<Products>() {
+        call = tc.getProducts();
+        call.enqueue(new Callback<Products>() {
             @Override
             public void onResponse(Call<Products> call, Response<Products> response) {
                 if (response.isSuccessful()) {

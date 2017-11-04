@@ -2,46 +2,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sv.com.tecnocompu.tecnocompuapp.fragments.ContactFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="sv.com.tecnocompu.tecnocompuapp.fragments.ContactFragment">
 
     <WebView
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:id="@+id/map"/>
+        android:layout_weight="7" />
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        >
+        android:layout_weight="3">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="10dp"
             android:orientation="vertical"
-            >
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contactos"
+                android:text="Contacto"
                 android:textAlignment="center"
-                />
+                android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Telefono"
-                />
+                android:text="Telefono: " />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0000"
-                />
+                android:text="2382-2033" />
 
 
         </LinearLayout>

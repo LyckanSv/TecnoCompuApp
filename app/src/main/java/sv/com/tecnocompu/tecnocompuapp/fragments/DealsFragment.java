@@ -63,6 +63,8 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     @BindView(R.id.refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    Call<Deals> call;
+
     public DealsFragment() {
         // Required empty public constructor
     }
@@ -103,13 +105,6 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
         searchView.setOnQueryTextListener(this);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            //mListener.onFragmentInteraction();
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -125,6 +120,8 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (call != null)
+            call.cancel();
     }
 
     @Override
@@ -142,8 +139,8 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public void onClickListener(Object object) {
-        if (object!=null && object instanceof Deal){
-            mListener.onFragmentInteraction(object,BUNDLE_DEAL);
+        if (object != null && object instanceof Deal) {
+            mListener.onFragmentInteraction(object, BUNDLE_DEAL);
         }
     }
 
@@ -152,7 +149,8 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     public void startQuery() {
-        tc.getDeals().enqueue(new Callback<Deals>() {
+        call = tc.getDeals();
+        call.enqueue(new Callback<Deals>() {
             @Override
             public void onResponse(Call<Deals> call, Response<Deals> response) {
                 if (response.isSuccessful()) {
@@ -173,7 +171,7 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void workResponse(Deals body) {
-        dealAdapter = new DealAdapter(body.getDeals(), this.getActivity(),this);
+        dealAdapter = new DealAdapter(body.getDeals(), this.getActivity(), this);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this.getActivity(), R.anim.grid_layout_animation_from_bottom);
         recyclerView.setLayoutAnimation(animation);
         recyclerView.setAdapter(dealAdapter);
@@ -188,6 +186,7 @@ public class DealsFragment extends Fragment implements SearchView.OnQueryTextLis
             emptyMessage.setVisibility(View.INVISIBLE);
         }
     }
+
 
     @Override
     public void onDestroyView() {

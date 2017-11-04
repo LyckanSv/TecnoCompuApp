@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -125,9 +126,12 @@ public class MainActivity extends AppCompatActivity
             fragmentTransactionMenu.addToBackStack(null);
             fragmentTransactionMenu.commit();
         } else if (id == R.id.nav_about) {
-            fragmentTransactionMenu.replace(R.id.fragment_container, aboutFragment);
-            fragmentTransactionMenu.addToBackStack(null);
-            fragmentTransactionMenu.commit();
+            /**fragmentTransactionMenu.replace(R.id.fragment_container, aboutFragment);
+             fragmentTransactionMenu.addToBackStack(null);
+             fragmentTransactionMenu.commit();
+             */
+            if (getCurrentFocus() != null)
+                Snackbar.make(getCurrentFocus(), "Tecnocompu 2017", Snackbar.LENGTH_LONG).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
