@@ -2,12 +2,18 @@ package sv.com.tecnocompu.tecnocompuapp.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import sv.com.tecnocompu.tecnocompuapp.R;
+import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,11 +24,21 @@ public class DealDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Deal deal;
+
+    @BindView(R.id.deal_title)
+    TextView dealTitle;
+
+    @BindView(R.id.deal_subtitle)
+    TextView dealSubtitle;
+
+
+    @BindView(R.id.deal_description)
+    TextView dealDescription;
 
 
     public DealDetailFragment() {
@@ -34,15 +50,13 @@ public class DealDetailFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment DealDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DealDetailFragment newInstance(String param1, String param2) {
+    public static DealDetailFragment newInstance(Deal param1) {
         DealDetailFragment fragment = new DealDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +65,7 @@ public class DealDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            deal = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -60,7 +73,24 @@ public class DealDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_deal_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_deal_detail, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (deal != null) {
+            dealTitle.setText(deal.getTitle());
+            dealSubtitle.setText(deal.getSubtitle());
+            dealDescription.setText(deal.getDescription());
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

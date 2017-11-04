@@ -9,10 +9,11 @@ public class TecnoCompuAPIControler {
     public static TecnoCompuAPI getClient() {
 
         String BASEURL = "http://192.168.0.18/api/";
+        String URL_FINAL = "http://192.168.8.102/tecnocompuwebservice/public/index.php/api/";
         String ALT_URL = "https://gitlab.com/snippets/";
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ALT_URL)
+                .baseUrl(URL_FINAL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

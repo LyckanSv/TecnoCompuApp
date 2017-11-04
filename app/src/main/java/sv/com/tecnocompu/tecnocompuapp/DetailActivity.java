@@ -2,7 +2,13 @@ package sv.com.tecnocompu.tecnocompuapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import sv.com.tecnocompu.tecnocompuapp.fragments.DealDetailFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.ProductDetailFragment;
 import sv.com.tecnocompu.tecnocompuapp.pojos.Deal;
@@ -19,11 +25,17 @@ public class DetailActivity extends AppCompatActivity {
     private Deal deal;
     private Product product;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tab_header)
+    ImageView tabHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
         if (getIntent().getExtras() != null) {
             switch (getIntent().getStringExtra(FLAG)) {
                 case BUNDLE_PRODUCT:
@@ -41,12 +53,20 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         }
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void prepareDeal(Deal deal) {
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, DealDetailFragment.newInstance(deal)).commit();
+        Picasso.with(this).load(deal.getImageUrl()).error(R.drawable.nodisponible).into(tabHeader);
     }
 
     private void prepareProduct(Product product) {
+        Picasso.with(this).load(product.getPictureUrl()).error(R.drawable.nodisponible).into(tabHeader);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, ProductDetailFragment.newInstance(product)).commit();
     }
 }

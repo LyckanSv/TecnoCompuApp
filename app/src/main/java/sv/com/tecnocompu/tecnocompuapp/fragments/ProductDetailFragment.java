@@ -2,12 +2,18 @@ package sv.com.tecnocompu.tecnocompuapp.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import sv.com.tecnocompu.tecnocompuapp.R;
+import sv.com.tecnocompu.tecnocompuapp.pojos.Product;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,12 +24,21 @@ public class ProductDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Product product;
 
+    Unbinder unbinder;
+
+    @BindView(R.id.product_title)
+    TextView productTitle;
+
+    @BindView(R.id.product_model)
+    TextView productModel;
+
+    @BindView(R.id.product_description)
+    TextView productDescription;
 
     public ProductDetailFragment() {
         // Required empty public constructor
@@ -34,15 +49,13 @@ public class ProductDetailFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ProductDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductDetailFragment newInstance(String param1, String param2) {
+    public static ProductDetailFragment newInstance(Product param1) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +64,7 @@ public class ProductDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            product = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -60,7 +72,24 @@ public class ProductDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (product != null) {
+            productTitle.setText(product.getName());
+            productModel.setText(product.getModel());
+            productDescription.setText(product.getDescription());
+        }
+    }
 }
