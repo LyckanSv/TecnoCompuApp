@@ -8,6 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +28,7 @@ import sv.com.tecnocompu.tecnocompuapp.fragments.ContactFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.DealsFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.HomeFragment;
 import sv.com.tecnocompu.tecnocompuapp.fragments.ProductsFragment;
+import sv.com.tecnocompu.tecnocompuapp.utils.QueryHelperListener;
 
 
 public class MainActivity extends AppCompatActivity
@@ -33,8 +37,7 @@ public class MainActivity extends AppCompatActivity
         ProductsFragment.OnFragmentInteractionListener,
         DealsFragment.OnFragmentInteractionListener,
         ContactFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener
-{
+        AboutFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     ProductsFragment productsFragment;
     ContactFragment contactFragment;
     AboutFragment aboutFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +86,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        } else if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
     }
+
+
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -98,12 +104,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
